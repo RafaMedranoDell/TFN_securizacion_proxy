@@ -1,0 +1,107 @@
+
+
+admin@ave-01:~/tmp/>: ./goav proxy show -n
+         name        | domainFqdn |    vcenterHost    |                    id                    | activated | autoDsMapping | clientVersion
+---------------------+------------+-------------------+------------------------------------------+-----------+---------------+----------------
+  avproxy.demo.local | /clients   | vcsa01.demo.local | 190a06ec4ba3ae029ad04700d2fcd640166fef24 | true      | false         | 19.4.100-69
+
+  
+  
+
+####CONFIGURAR PASS POR DEFECTO EN GOAV ########
+################################################
+
+admin@ave-01:~/tmp/>: ./goav proxy set-password --name avproxy.demo.local -n
+Proxy : avproxy.demo.local ( VC : vcsa01.demo.local )
+✔ No
+Enter root Password for avproxy.demo.local: ******█
+================== Enabling SSH on Proxies =================
+------------ avproxy.demo.local ------------
+Enabling SSH from Utility Node
+Enabling PasswordAuthentication for Proxy
+Restarting SSHD Service
+
+
+#### CAMBIAR PASS POR DEFECTO EN PROXYes #######
+################################################
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "echo 'admin:P@ssword_123'| chpasswd" -n
+============== avproxy.demo.local=========================
+Executing echo 'admin:P@ssword_123'| chpasswd on avproxy.demo.local
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "echo 'root:P@ssword_123'| chpasswd" -n
+============== avproxy.demo.local=========================
+Executing echo 'root:P@ssword_123'| chpasswd on avproxy.demo.local
+
+admin@ave-01:~/tmp/>: ./goav proxy set-password --name avproxy.demo.local -n
+Proxy : avproxy.demo.local ( VC : vcsa01.demo.local )
+✔ No
+Enter root Password for avproxy.demo.local: ************█
+================== Enabling SSH on Proxies =================
+------------ avproxy.demo.local ------------
+Enabling SSH from Utility Node
+Enabling PasswordAuthentication for Proxy
+Restarting SSHD Service
+
+
+#### COPIA DE SEGURIDAD DE FICHEROS ############
+################################################
+
+admin@ave-01:~/tmp/>: ./goav proxy upload --local /home/admin/tmp/backup_files.sh --remote /tmp/backup_files.sh -n
+==============  avproxy.demo.local =========================
+Transferring /home/admin/tmp/backup_files.sh on avproxy.demo.local @ /tmp/backup_files.sh
+Transferred successfully
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "chmod 744 /tmp/backup_files.sh" -n
+============== avproxy.demo.local=========================
+Executing chmod 744 /tmp/backup_files.sh on avproxy.demo.local
+
+admin@ave-01:~/tmp/>:
+admin@ave-01:~/tmp/>: ./goav proxy exec "/tmp/backup_files.sh" -n
+============== avproxy.demo.local=========================
+Executing /tmp/backup_files.sh on avproxy.demo.local
+
+
+#### hardening.sh ##############################
+################################################
+
+admin@ave-01:~/tmp/>: ./goav proxy upload --local /usr/local/avamar/lib/admin/security/hardening.sh --remote /tmp/hardening.sh -n
+==============  avproxy.demo.local =========================
+Transferring /usr/local/avamar/lib/admin/security/hardening.sh on avproxy.demo.local @ /tmp/hardening.sh
+Transferred successfully
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "chmod 744 /tmp/hardening.sh" -n
+============== avproxy.demo.local=========================
+Executing chmod 744 /tmp/hardening.sh on avproxy.demo.local
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "chmod 700 /tmp/hardening.sh" -n
+============== avproxy.demo.local=========================
+Executing chmod 700 /tmp/hardening.sh on avproxy.demo.local
+
+
+
+#### POLITICA DE CONTRASEÑAS####################
+################################################
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "useradd -D -f 60" -n
+============== avproxy.demo.local=========================
+Executing useradd -D -f 60 on avproxy.demo.local
+
+
+admin@ave-01:~/tmp/>: ./goav proxy upload --local /home/admin/tmp/proxy-files/common-password --remote /etc/pam.d/common-password
+==============  avproxy.demo.local =========================
+Transferring /home/admin/tmp/proxy-files/common-password on avproxy.demo.local @ /etc/pam.d/common-password
+Transferred successfully
+
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "touch /etc/security/opasswd" -n
+============== avproxy.demo.local=========================
+Executing touch /etc/security/opasswd on avproxy.demo.local
+
+admin@ave-01:~/tmp/>: ./goav proxy exec "chmod 600 /etc/security/opasswd" -n
+============== avproxy.demo.local=========================
+Executing chmod 600 /etc/security/opasswd on avproxy.demo.local
+
+
+
+
